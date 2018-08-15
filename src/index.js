@@ -13,8 +13,6 @@ let user = {
   lastName: 'Tsvetkov'
 };
 
-// user = null;
-
 function getGreeting() {
   if (user) {
     return <h1>Hello, {formatName(user)}!</h1>;
@@ -23,12 +21,7 @@ function getGreeting() {
   return <h1>Hello, Stranger.</h1>;
 }
 
-let element = React.createElement(
-  'h1',
-  { className: 'greeting' },
-  'Hello, world!'
-);
-element = getGreeting();
+let element = getGreeting();
 
 ReactDOM.render(element, document.getElementById('root'));
 
