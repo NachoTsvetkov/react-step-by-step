@@ -2,51 +2,45 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function FormattedDate(props) {
-  return <h2>It is {props.date.toLocaleTimeString()}</h2>;
-}
-
-class Clock extends React.Component {
+class Toggle extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { isToggleOn: true };
 
-    this.state = {
-      date: new Date()
-    };
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  tick() {
-    this.setState({
-      date: new Date()
-    });
-  }
-
-  componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerID);
+  handleClick() {
+    this.setState(prevState => ({
+      isToggleOn: !prevState.isToggleOn
+    }));
   }
 
   render() {
     return (
-      <div>
-        <h1>Hello World!</h1>
-        <FormattedDate date={this.state.date} />
-      </div>
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
     );
   }
 }
 
-function App(props) {
-  return (
-    <div>
-      <Clock />
-      <Clock />
-      <Clock />
-    </div>
-  );
+class LoggingButton extends React.Component {
+  handleClick() {
+    console.log('this is:', this);
+  }
+
+  render() {
+    // This syntax ensures `this` is bound within handleClick
+    return <button onClick={e => this.handleClick(e)}>Click me</button>;
+  }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <div>
+    <Toggle />
+    <LoggingButton />
+  </div>,
+  document.getElementById('root')
+);
