@@ -1,32 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import App from './App';
-// import registerServiceWorker from './registerServiceWorker';
 
-function formatName(user) {
-  return user.firstName + ' ' + user.lastName;
+function tick() {
+  let clock = (
+    <div>
+      <h1>Hello World!</h1>
+      <h2>It is {new Date().toLocaleTimeString()}</h2>
+    </div>
+  );
+  ReactDOM.render(clock, document.getElementById('root'));
 }
 
-let user = {
-  firstName: 'Nacho',
-  lastName: 'Tsvetkov'
-};
-
-function getGreeting() {
-  if (user) {
-    return <h1>Hello, {formatName(user)}!</h1>;
-  }
-
-  return <h1>Hello, Stranger.</h1>;
-}
-
-let element = getGreeting();
-
-ReactDOM.render(element, document.getElementById('root'));
-
-// ReactDOM.render(
-//     <App />,
-//     document.getElementById('root')
-// );
-// registerServiceWorker();
+setInterval(tick, 1000);
