@@ -2,35 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function Fragment(props) {
-  return <div>{props.children}</div>;
-}
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Loadable from 'react-loadable';
 
-function ListItem({ item }) {
-  return (
-    <Fragment>
-      <dt>{item.term}</dt>
-      <dd>{item.description}</dd>
-    </Fragment>
-  );
-}
+const Loading = () => <div>Loading...</div>;
 
-function Glossary(props) {
-  return (
-    <dl>
-      {props.items.map(item => (
-        // Fragments should also have a `key` prop when mapping collections
-        <ListItem key={item.id} item={item} />
-      ))}
-    </dl>
-  );
-}
+const Home = Loadable({
+  loader: () => import('./routes/Home'),
+  loading: Loading
+});
 
-let items = [
-  { id: 1, term: 'Caffe', description: 'Good' },
-  { id: 2, term: 'Tea', description: 'Good' },
-  { id: 3, term: 'Water', description: 'Good' },
-  { id: 4, term: 'Vitamins', description: 'Good' }
-];
+const About = Loadable({
+  loader: () => import('./routes/About'),
+  loading: Loading
+});
 
-ReactDOM.render(<Glossary items={items} />, document.getElementById('root'));
+const App = () => (
+  <Router>
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route path="/about" component={About} />
+    </Switch>
+  </Router>
+);
+
+ReactDOM.render(<App />, document.getElementById('root'));
