@@ -8,12 +8,12 @@ import Loadable from 'react-loadable';
 const Loading = () => <div>Loading...</div>;
 
 const Home = Loadable({
-  loader: () => import('./routes/Home'),
+  loader: () => import('./apps/routes/Home'),
   loading: Loading
 });
 
 const About = Loadable({
-  loader: () => import('./routes/About'),
+  loader: () => import('./apps/routes/About'),
   loading: Loading
 });
 
