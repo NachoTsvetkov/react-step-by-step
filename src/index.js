@@ -2,51 +2,54 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-// These two containers are siblings in the DOM
-class CustomTextInput extends React.Component {
+class Cat extends React.Component {
+  render() {
+    const mouse = this.props.mouse;
+    return (
+      <img
+        alt="cat"
+        src="/cat.jpg"
+        style={{ position: 'absolute', left: mouse.x, top: mouse.y }}
+      />
+    );
+  }
+}
+
+class Mouse extends React.Component {
   constructor(props) {
     super(props);
-    // create a ref to store the textInput DOM element
-    this.textInput = React.createRef();
-    this.focusTextInput = this.focusTextInput.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.state = { x: 0, y: 0 };
   }
 
-  focusTextInput() {
-    // Explicitly focus the text input using the raw DOM API
-    // Note: we're accessing "current" to get the DOM node
-    this.textInput.current.focus();
+  handleMouseMove(event) {
+    this.setState({
+      x: event.clientX,
+      y: event.clientY
+    });
   }
 
   render() {
-    // tell React that we want to associate the <input> ref
-    // with the `textInput` that we created in the constructor
     return (
-      <div>
-        <input type="text" ref={this.textInput} />
-
-        <input
-          type="button"
-          value="Focus the text input"
-          onClick={this.focusTextInput}
-        />
+      <div style={{ height: '100%' }} onMouseMove={this.handleMouseMove}>
+        {/*
+          Instead of providing a static representation of what <Mouse> renders,
+          use the `render` prop to dynamically determine what to render.
+        */}
+        {this.props.render(this.state)}
       </div>
     );
   }
 }
 
-class AutoFocusTextInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.textInput = React.createRef();
-  }
-
-  componentDidMount() {
-    this.textInput.current.focusTextInput();
-  }
-
+class MouseTracker extends React.Component {
   render() {
-    return <CustomTextInput ref={this.textInput} />;
+    return (
+      <div>
+        <h1>Move the mouse around!</h1>
+        <Mouse render={mouse => <Cat mouse={mouse} />} />
+      </div>
+    );
   }
 }
-
-ReactDOM.render(<AutoFocusTextInput />, document.getElementById('root'));
+ReactDOM.render(<MouseTracker />, document.getElementById('root'));
